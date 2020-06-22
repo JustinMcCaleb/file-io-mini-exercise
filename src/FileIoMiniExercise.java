@@ -10,32 +10,70 @@ public class FileIoMiniExercise {
 
         // TODO: define the path to the instructor-names.txt file
 
+        Path instructorNamesPath = Paths.get("src/instructor-names.txt");
+        System.out.println(Files.exists(instructorNamesPath));
+
 
         // TODO: uncomment the following variable declarations
-//        List<Instructor> instructors;
-//        List<String> names = new ArrayList<>();
+        List<Instructor> instructors;
+        List<String> names = new ArrayList<>();
 
         // TODO: read the contents of the instructor-names.txt file and store the list of strings into the 'names' variable
+
+        try {
+            names = Files.readAllLines(instructorNamesPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
         // TODO: assign the 'instructors' variable a list of Instructor objects with names matching the list of strings/names from the text file (the Instructor class has a helpful method for this)
 
+        instructors = Instructor.nameStringsToInstructors(names);
 
         // TODO: greet all instructors by their names
+
+        for (Instructor instructor : instructors) {
+            System.out.println("Hello, " + instructor.getName() + "!");
+        }
+//        greetInstructors(instructors);
 
 
         // TODO: change "Fred" to "David" in the list of Instructor objects
 
+        List<Instructor> updatedInstructors = new ArrayList<>();
+
+        for (Instructor instructor : instructors) {
+
+            if(instructor.getName().equals("Fred")){
+                instructor.setName("David");
+            }
+            updatedInstructors.add(instructor);
+        }
+
+
 
         // TODO: update the list of strings/names ('names' variable) to the latest names from the Instructor objects (the Instructor class has a helpful method for this)
 
+        names = Instructor.instructorsToNameStrings(updatedInstructors);
 
         // TODO: overwrite the instructors-names.txt file with the latest list of names
 
+        try {
+            Files.write(instructorNamesPath, names);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         // TODO: uncomment the following line
-//        System.out.println("============== after name change...");
+        System.out.println("============== after name change...");
 
         // TODO: greet instructors again (no need to reread the text file again; just use the existing list of instructors in memory)
+
+        for (Instructor instructor : updatedInstructors) {
+            System.out.println("Hello, " + instructor.getName() + "!");
+        }
+
 
 
     }
